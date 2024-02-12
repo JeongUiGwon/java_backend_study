@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import java.util.List;
+
 @Service
 public class SimpleProductService {
     private ListProductRepository listProductRepository;
@@ -34,5 +36,31 @@ public class SimpleProductService {
         Product product = listProductRepository.findById(id);
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
         return productDto;
+    }
+    public List<ProductDto> findAll() {
+        List<Product> products = listProductRepository.findAll();
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class))
+                .toList();
+        return productDtos;
+    }
+
+    public List<ProductDto> findByNameContaining(String name) {
+        List<Product> products = listProductRepository.findByNameContaining(name);
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class))
+                .toList();
+        return productDtos;
+    }
+
+    public ProductDto update(ProductDto productDto) {
+        Product product = modelMapper.map(productDto, Product.class);
+        Product updatedProduct = listProductRepository.update(product);
+        ProductDto updatedProductDto = modelMapper.map(updatedProduct, ProductDto.class);
+        return updatedProductDto;
+    }
+
+    public void delete(Long id) {
+        listProductRepository.delete(id);
     }
 }
