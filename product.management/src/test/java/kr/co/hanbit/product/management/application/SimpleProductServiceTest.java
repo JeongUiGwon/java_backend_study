@@ -1,5 +1,6 @@
 package kr.co.hanbit.product.management.application;
 
+import kr.co.hanbit.product.management.domain.EntityNotFoundException;
 import kr.co.hanbit.product.management.presentation.ProductDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("prod")
 class SimpleProductServiceTest {
 
     @Autowired
@@ -26,9 +27,19 @@ class SimpleProductServiceTest {
 
         ProductDto foundProductDto = simpleProductService.findById(savedProductId);
 
-        System.out.println(savedProductDto.getId() == foundProductDto.getId());
-        System.out.println(savedProductDto.getName() == foundProductDto.getName());
-        System.out.println(savedProductDto.getPrice() == foundProductDto.getPrice());
-        System.out.println(savedProductDto.getAmount() == foundProductDto.getAmount());
+        assertTrue(savedProductDto.getId().equals(foundProductDto.getId()));
+        assertTrue(savedProductDto.getName().equals(foundProductDto.getName()));
+        assertTrue(savedProductDto.getPrice().equals(foundProductDto.getPrice()));
+        assertTrue(savedProductDto.getAmount().equals(foundProductDto.getAmount()));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 상품 id로 조회하면 EntityNotFoundException이 발생해야한다.")
+    void findProductNotExistIdTest() {
+        Long notExistId = -1L;
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            simpleProductService.findById(notExistId);
+        });
     }
 }
