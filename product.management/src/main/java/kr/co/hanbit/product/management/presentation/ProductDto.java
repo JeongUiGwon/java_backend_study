@@ -34,4 +34,9 @@ public class ProductDto {
         this.id = id;
     }
 
+    public ProductDto(String name, Integer price, Integer amount) {
+        this.name = name;
+        this.price = price;
+        this.amount = amount;
+    }
 }
