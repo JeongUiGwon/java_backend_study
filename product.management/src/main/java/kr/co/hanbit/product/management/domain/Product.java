@@ -60,6 +60,16 @@ public class Product {
         return this.name.contains(name);
     }
 
+    public Product() {
+    }
+
+    public Product(Long id, String name, Integer price, Integer amount) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.amount = amount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
