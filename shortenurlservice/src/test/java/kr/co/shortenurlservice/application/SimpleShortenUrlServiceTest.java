@@ -1,5 +1,6 @@
 package kr.co.shortenurlservice.application;
 
+import kr.co.shortenurlservice.domain.NotFoundShortenUrlException;
 import kr.co.shortenurlservice.presentation.ShortenUrlCreateRequestDto;
 import kr.co.shortenurlservice.presentation.ShortenUrlCreateResponseDto;
 import org.junit.jupiter.api.DisplayName;
@@ -26,5 +27,15 @@ class SimpleShortenUrlServiceTest {
 
         String originalUrl = simpleShortenUrlService.getOriginalUrlByShortenUrlKey(shortenUrlKey);
         assertTrue(originalUrl.equals(expectedOriginalUrl));
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 단축 URL을 조회하는 경우는 NotFoundShortenUrlException이 발생해야 한다.")
+    void isNotExistUrlTest() {
+        String notExistShortenUrlKey = "abcdedfg";
+
+        assertThrows(NotFoundShortenUrlException.class, () -> {
+            simpleShortenUrlService.getOriginalUrlByShortenUrlKey(notExistShortenUrlKey);
+        });
     }
 }
